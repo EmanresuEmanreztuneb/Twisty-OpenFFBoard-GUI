@@ -627,7 +627,7 @@ class InputsCanvas(PlacedGroup):
         self.hid_link = hid_link
         self.minmax_vars = {}  # apin adr -> {"min": StringVar, "max": StringVar, ...}
 
-        self._place(ttk.Label(parent, text="Accelerate"), P.INPUTS_GAUGE1_LABEL_X, P.INPUTS_GAUGE1_LABEL_Y, anchor="n")
+        self._place(ttk.Label(parent, text="Brake"), P.INPUTS_GAUGE1_LABEL_X, P.INPUTS_GAUGE1_LABEL_Y, anchor="n")
         self.gauge1 = SpriteGauge(parent, os.path.join(IMAGES_DIR, "Y"), scale=P.INPUTS_GAUGE1_Y_AXIS_SCALE)
         self._place(self.gauge1, P.INPUTS_GAUGE1_IMAGE_X, P.INPUTS_GAUGE1_IMAGE_Y, anchor="n")
         self.label1 = ttk.Label(parent, text="0")
@@ -677,7 +677,7 @@ class InputsCanvas(PlacedGroup):
             max_button_pos=(P.INPUTS_CONTROLS2_MAX_BUTTON_X, P.INPUTS_CONTROLS2_MAX_BUTTON_Y),
         )
 
-        self._place(ttk.Label(parent, text="Brake"), P.INPUTS_GAUGE2_LABEL_X, P.INPUTS_GAUGE2_LABEL_Y, anchor="n")
+        self._place(ttk.Label(parent, text="Accelerate"), P.INPUTS_GAUGE2_LABEL_X, P.INPUTS_GAUGE2_LABEL_Y, anchor="n")
         self.gauge2 = SpriteGauge(parent, os.path.join(IMAGES_DIR, "Z"), scale=P.INPUTS_GAUGE2_Z_AXIS_SCALE)
         self._place(self.gauge2, P.INPUTS_GAUGE2_IMAGE_X, P.INPUTS_GAUGE2_IMAGE_Y, anchor="n")
         self.label2 = ttk.Label(parent, text="0")
@@ -1350,8 +1350,8 @@ class EffectsCanvas(PlacedGroup):
                 lines.append(f"{cmd}_q={self.fx_panel.q_vars[cmd].get()}")
             lines.append(f"frictionPctSpeedToRampup={int(self.fx_panel.smooth_slider.get_value())}")
         if self.inputs_canvas is not None:
-            # Value analog 1 ("Accelerate", adr=1) / Value analog 2
-            # ("Brake", adr=0) Min/Max calibration + Invert Output - per
+            # Value analog 1 ("Brake", adr=1) / Value analog 2
+            # ("Accelerate", adr=0) Min/Max calibration + Invert Output - per
             # user request, same "saved/restored as its own set of keys"
             # treatment as filterProfile/Freq/Q above.
             for adr in (1, 0):
@@ -1465,7 +1465,7 @@ class EffectsCanvas(PlacedGroup):
             fx._send_fx("frictionPctSpeedToRampup")(val)
 
     def _load_inputs_fields(self):
-        """Value analog 1 ("Accelerate", adr=1) / Value analog 2 ("Brake",
+        """Value analog 1 ("Brake", adr=1) / Value analog 2 ("Accelerate",
         adr=0) Min/Max calibration + Invert Output live on the Main tab's
         InputsCanvas (self.inputs_canvas) - applied all at once at the end
         of Load, same treatment as _load_freq_q_fields() above."""
@@ -2764,10 +2764,10 @@ class App(tk.Tk):
         # Status/Errors log - fixed pixel size (not the Text widget's own
         # character/line-based sizing) via a plain tk.Frame with
         # pack_propagate(False), so its right edge lands exactly at the
-        # Inputs canvas's rightmost image (the Brake/Z-axis gauge, per user
+        # Inputs canvas's rightmost image (the Accelerate/Z-axis gauge, per user
         # request) regardless of font metrics. Originally measured against
         # the real running app at the old button width (66px each, 10
-        # chars): wrapper started at x=592, Brake gauge's right edge at
+        # chars): wrapper started at x=592, Accelerate gauge's right edge at
         # x=908 (InputsCanvas.gauge2, see Placement.py's
         # INPUTS_GAUGE2_IMAGE_X) -> 908-592=316px Text width + 17px
         # scrollbar = 333 wrapper width. Recomputed analytically (not
